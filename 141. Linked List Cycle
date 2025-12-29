@@ -1,0 +1,17 @@
+public class Solution {
+    public boolean hasCycle(ListNode head) {
+        ListNode fast = head, slow = head;
+        // check null because some cases are not in loop
+        while(fast != null && fast.next != null){ 
+            slow = slow.next;
+            fast = fast.next.next;
+            if(slow == fast) return true;
+        }
+        return false;
+    }//  Floyd’s Cycle Detection Algorithm
+        // - Use two pointers:
+        //      - Slow pointer (tortoise) → moves one step at a time.
+        //      - Fast pointer (hare) → moves two steps at a time.
+        // - If there’s no cycle, the fast pointer will eventually hit null.
+        // - If there is a cycle, the fast pointer will eventually meet the slow pointer inside the loop.
+}
