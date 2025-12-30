@@ -1,0 +1,36 @@
+class Solution {
+    public void reorderList(ListNode head) {
+        if(head == null || head.next == null) return;
+
+        // step 1: Find Middle
+        ListNode slow = head;
+        ListNode fast = head;
+        while(fast != null && fast.next != null){
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        // step 2: reverse the second half
+        ListNode curr = slow.next, prev = null;
+        slow.next = null;
+        while(curr != null){
+            ListNode temp = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = temp;
+        }
+
+        //step 3: merge both one by one
+        ListNode list1 = head, list2 = prev;
+        while(list2 != null){
+            ListNode l1 = list1.next; // store l1 address
+            ListNode l2 = list2.next; // store l2 address
+
+            list1.next = list2; // point list1.next to list2
+            list2.next = l1; // point list2.next to l1 temp address
+
+            list1 = l1; //move pointer l1
+            list2 = l2; //move pointer l2
+        }
+    }
+}
