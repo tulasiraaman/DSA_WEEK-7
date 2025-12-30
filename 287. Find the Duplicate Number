@@ -1,0 +1,54 @@
+class Solution {
+    public int ffindDuplicate(int[] nums) {
+        int left = 1, right = nums.length - 1; //left = 0 can work
+        //TC - O(n log n), SC - O(n)
+        while (left < right) {
+            int mid = left + (right - left) / 2;
+            int count = 0;
+
+            for (int num : nums) {
+                if (num <= mid)
+                    count++;
+            }
+
+            if (count > mid) {
+                right = mid; // duplicate in left half
+            } else {
+                left = mid + 1; // duplicate in right half
+            }
+            //cyclic sort is efficient but modifies the orginal array.
+            //Floyd’s cycle detection is best for that - TC O(n), SC O(1).
+        }
+        return left;
+    }
+
+    public int findDuplicate(int[] nums) {
+        int slow = nums[0];
+        int fast = nums[0];
+
+        // Phase 1: Detect the cycle
+        do {
+            slow = nums[slow]; // move one step
+            fast = nums[nums[fast]]; // move two steps
+        } while (slow != fast); 
+        //we can not return after this because both of the pointers points at a single no.
+        //like [2,5,9,6,9,3,8,9,7,1] -> fast points 7 as well slow points 7.
+
+        // Phase 2: Find entrance to cycle (duplicate number)
+        slow = nums[0]; // reset slow to start
+        while (slow != fast) {
+            slow = nums[slow]; // move one step
+            fast = nums[fast]; // move one step
+        }
+        return slow; // cycle entrance = duplicate
+    }
+    // Phase 1: You drop two runners (slow and fast) into a circular track. They eventually bump into each other somewhere inside the loop.
+
+    // Phase 2: You restart one runner at the beginning of the track, keep the other where they met, and let them jog at the same speed. They will meet at the entrance of the loop — which corresponds to the duplicate number.
+
+    // When we treat the array as a "linked list" (each value points to the next index), a cycle is formed because of the duplicate.
+
+    // Example Take nums = [2,5,9,6,9,3,8,9,7,1],
+    //      -> Start at index 0 → value 2 → index 2 → value 9 → index 9 → value 1 → index 1 → value 5 → index 5 → value 3 → index 3 → value 6 → index 6 → value 8 → index 8 → value 7 → index 7 → value 9 → index 9 → value 1 → …
+    //      -> You can see the loop: 9 → 1 → 5 → 3 → 6 → 8 → 7 → 9 … Entrance is 9.
+}
