@@ -1,0 +1,23 @@
+class Solution {
+    public ListNode partition(ListNode head, int x) {
+        ListNode lesser = new ListNode(0);
+        ListNode greater = new ListNode(0);
+
+        ListNode lpointer = lesser, gpointer = greater;
+
+        while(head != null){
+            if(head.val < x){
+                lpointer.next = head;
+                lpointer = lpointer.next;
+            }else{
+                gpointer.next = head;
+                gpointer = gpointer.next;
+            }
+            head = head.next;
+        }
+
+        gpointer.next = null;
+        lpointer.next = greater.next;
+        return lesser.next;        
+    }// TC - O(n), SC - O(1)
+}
