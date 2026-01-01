@@ -1,0 +1,25 @@
+public class Solution {
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        if (headA == null || headB == null)
+            return null;
+
+        ListNode PointerA = headA;
+        ListNode PointerB = headB;
+
+        // Traverse both lists
+        // Trick: when a pointer reaches the end of its list,
+        // redirect it to the head of the other list.
+        // This way, both pointers traverse lenA + lenB steps.
+
+        while (PointerA != PointerB) {
+            // When pA reaches the end, redirect to headB
+            PointerA = (PointerA == null) ? headB : PointerA.next;
+            // When pB reaches the end, redirect to headA
+            PointerB = (PointerB == null) ? headA : PointerB.next;
+        }
+
+        // Either intersection node or null
+        return PointerA;
+    } // TC - O(lenA + lenB), SC - O(1)
+}
+// If there is no intersection, after those steps both pointers will reach null at the same time.
