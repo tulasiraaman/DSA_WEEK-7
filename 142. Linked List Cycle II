@@ -1,0 +1,28 @@
+public class Solution {
+    public ListNode detectCycle(ListNode head) {
+        if (head == null || head.next == null)
+            return null;
+        ListNode slow = head, fast = head;
+
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+            // cycle detected
+            if (slow == fast) {
+                // Find cycle start
+                slow = head;
+                while (slow != fast) {
+                    slow = slow.next;
+                    fast = fast.next;
+                }
+                return slow; // cycle start node
+            }
+        }
+        return null;
+    }
+}
+// After detecting the cycle,
+// -> Reset one pointer (slow) back to head.
+// -> Keep the other pointer (fast) at the meeting point.
+// - Move both one step at a time.
+// -> The node where they meet again is the start of the cycle.
