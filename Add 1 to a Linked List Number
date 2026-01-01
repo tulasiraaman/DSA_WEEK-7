@@ -1,0 +1,44 @@
+class Solution {
+    public Node addOne(Node head) {
+        // code here.
+        if (head == null) return null;
+
+        // Reverse to process from least significant digit
+        head = reverse(head);
+        
+        int carry = 1;
+        Node cur = head, prev = null;
+        
+        while(cur != null){
+            int sum = cur.data + carry;
+            cur.data = sum % 10;
+            carry = sum / 10;
+            
+            prev = cur;
+            cur = cur.next;
+            
+            if(carry == 0) break;
+        }
+    
+        // If carry remains (e.g., 9 -> 10, 999 -> 1000)
+        if(carry > 0){
+            prev.next = new Node(carry);
+        }
+    
+        // Reverse back to original order
+        head = reverse(head);
+        return head;
+    }
+    
+    private Node reverse(Node head) {
+        Node prev = null;
+        Node curr = head;
+        while (curr != null) {
+            Node next = curr.next; // store next
+            curr.next = prev;      // reverse link
+            prev = curr;           // move prev forward
+            curr = next;           // move curr forward
+        }
+        return prev; // new head of reversed list
+    }
+}
