@@ -1,0 +1,36 @@
+class Solution {
+    public Node copyRandomList(Node head) {
+        if (head == null) return null;
+        Map<Node, Node> nodeMap = new HashMap<>();
+        Node curr = head;
+        Node prev = null;
+        Node res = null;
+
+        // Step 1: Create new nodes interleaved with original
+        while(curr != null){
+            Node newNode = new Node(curr.val);
+            nodeMap.put(curr, newNode);
+
+            if(prev == null){
+                res = newNode;
+            }else{
+                prev.next = newNode;
+            }
+
+            prev = newNode;
+            curr = curr.next;
+        }        
+
+        // Step 2: Assign random pointers
+        Node tempP = res;
+        curr = head;
+
+        while (curr != null) {
+            tempP.random = nodeMap.get(curr.random);
+
+            tempP = tempP.next;
+            curr = curr.next;
+        }
+        return res;
+    }
+}
