@@ -1,0 +1,32 @@
+class Solution {
+    public Node flatten(Node head) {
+        if(head == null) return head;
+
+        Stack<Node> stack = new Stack<>();
+        Node curr = head;
+
+        while(curr != null){
+            // If current node has a child
+            if(curr.child != null){
+
+                // If there's a next, push it to stack
+                if(curr.next != null) stack.push(curr.next);
+                
+                // Connect curr -> child
+                curr.next = curr.child;
+                curr.child.prev = curr;
+                curr.child = null;
+            }
+            // If no next but stack has nodes, pop and connect
+            if(curr.next == null && !stack.isEmpty()){
+                Node next = stack.pop();
+                curr.next = next;
+                next.prev = curr;
+            }
+            curr = curr.next;
+        }
+        return head;
+    }
+}
+// TC - O(n)
+// SC - O(d) where d = depth of nesting (recursion stack)
