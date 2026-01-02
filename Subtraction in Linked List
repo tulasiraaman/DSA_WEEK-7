@@ -1,0 +1,91 @@
+class Solution {
+    static Node subLinkedList(Node l1, Node l2) {
+        // Step 1: Remove leading zeros
+        l1 = removeLeadingZeros(l1);
+        l2 = removeLeadingZeros(l2);
+
+        // Step 2: Ensure l1 >= l2
+        if (compare(l1, l2) < 0) {
+            Node temp = l1;
+            l1 = l2;
+            l2 = temp;
+        }
+
+        // Step 3: Reverse both lists
+        l1 = reverse(l1);
+        l2 = reverse(l2);
+
+        Node result = null;
+        int borrow = 0;
+
+        // Step 4: Subtract digits
+        while (l1 != null) {
+            int d1 = l1.data - borrow;
+            int d2 = (l2 != null) ? l2.data : 0;
+
+            if (d1 < d2) {
+                d1 += 10;
+                borrow = 1;
+            } else {
+                borrow = 0;
+            }
+
+            int diff = d1 - d2;
+
+            Node newNode = new Node(diff);
+            newNode.next = result;
+            result = newNode;
+
+            l1 = l1.next;
+            if (l2 != null) l2 = l2.next;
+        }
+
+        // Step 5: Remove leading zeros
+        result = removeLeadingZeros(result);
+
+        return result;
+    }
+
+    // Compare two lists: returns -1 if l1<l2, 0 if equal, 1 if l1>l2
+    private static int compare(Node l1, Node l2) {
+        int len1 = length(l1), len2 = length(l2);
+        if (len1 != len2) return (len1 > len2) ? 1 : -1;
+
+        while (l1 != null && l2 != null) {
+            if (l1.data != l2.data) return (l1.data > l2.data) ? 1 : -1;
+            l1 = l1.next;
+            l2 = l2.next;
+        }
+        return 0;
+    }
+
+    // Helper: Length of list
+    private static int length(Node head) {
+        int count = 0;
+        while (head != null) {
+            count++;
+            head = head.next;
+        }
+        return count;
+    }
+
+    // Helper: Remove leading zeros
+    private static Node removeLeadingZeros(Node head) {
+        while (head != null && head.data == 0) {
+            head = head.next;
+        }
+        return (head == null) ? new Node(0) : head;
+    }
+
+    // Helper: Reverse linked list
+    private static Node reverse(Node head) {
+        Node prev = null, curr = head;
+        while (curr != null) {
+            Node next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+        }
+        return prev;
+    }
+}
