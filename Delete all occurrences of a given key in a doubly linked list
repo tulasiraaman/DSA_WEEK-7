@@ -1,0 +1,37 @@
+class Solution {
+    static Node deleteAllOccurOfX(Node head, int x) {
+        // Write your code here
+        if(head == null) return null;
+        
+        Node curr = head;
+        
+        while(curr != null){
+            
+            // find the value x and curr.data
+            if(curr.data == x){
+                
+                // if the x value is the head value change the head until head != x
+                if(curr == head){
+                    head = curr.next;
+                    
+                    // it cuts the prev add of curr head node if it is not null
+                    if (head != null) head.prev = null;
+                }
+                
+                else{
+                    // connect curr.prev node's pointer to curr.next node's
+                    if(curr.prev != null){
+                        curr.prev.next = curr.next;
+                    }
+                    // connect curr.next node's pointer to curr.prev node's
+                    if(curr.next != null){
+                        curr.next.prev = curr.prev;
+                    }
+                }
+            }
+            // move until find the x
+            curr = curr.next;
+        }
+        return head;
+    }// TC - O(n), SC - O(1)
+}
