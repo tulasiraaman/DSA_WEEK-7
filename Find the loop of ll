@@ -1,0 +1,31 @@
+class Solution {
+    public int lengthOfLoop(Node head) {
+        // code here
+        Node slow = head, fast = head;
+
+        // Step 1: Detect loop
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+
+            // Loop detected
+            if (slow == fast) {
+                return countLoopLength(slow);
+            }
+        }
+        return 0; // No loop
+    }
+    
+    // Helper function to count loop length
+    private int countLoopLength(Node node) {
+        int count = 1;
+        Node temp = node.next;
+
+        while (temp != node) {
+            count++;
+            temp = temp.next;
+        }
+        return count;
+    }
+
+}
