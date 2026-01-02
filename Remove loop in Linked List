@@ -1,0 +1,42 @@
+class Solution {
+    public static void removeLoop(Node head) {
+        // code here
+        if (head == null || head.next == null) return;
+
+        Node slow = head, fast = head;
+
+        // Step 1: Detect loop
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+
+            // Loop detected
+            if (slow == fast) {
+                breakLoop(head, slow);
+                return;
+            }
+        }
+    }
+    
+    private static void breakLoop(Node head, Node meetingPoint) {
+        Node ptr1 = head;
+        Node ptr2 = meetingPoint;
+
+        // Step 2: Find start of loop
+        while (ptr1 != ptr2) {
+            ptr1 = ptr1.next;
+            ptr2 = ptr2.next;
+        }
+
+        // Step 3: Find last node in loop
+        Node loopStart = ptr1;
+        Node temp = loopStart;
+        while (temp.next != loopStart) {
+            temp = temp.next;
+        }
+
+        // Break the loop
+        temp.next = null;
+    }
+
+}
